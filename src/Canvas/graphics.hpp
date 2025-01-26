@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include <string>
+#include "Math"
 
 namespace Canvas {
     class Object2D;
@@ -8,6 +9,8 @@ namespace Canvas {
     class Circle2D;
 
     class Image2D;
+    class SpriteSheet2D;
+    class Animation2D;
 }
 
 
@@ -54,11 +57,11 @@ class Canvas::Circle2D : public Canvas::Object2D {
 /**************************************/
 
 class Canvas::Image2D : public Canvas::Object2D {
-    private:
-    Texture2D texture;
+    protected:
 
     public:
     Color tint;
+    Texture2D texture;
 
     Image2D(float x, float y, std::string file_path, Color tint = WHITE): Object2D(x, y, 0, 0), texture(LoadTexture(file_path.c_str())), tint(tint){
         w = texture.width;
@@ -68,4 +71,49 @@ class Canvas::Image2D : public Canvas::Object2D {
     bool isLoaded();
     void draw();
     void unload();
+};
+
+class Canvas::SpriteSheet2D : public Canvas::Image2D {
+    public:
+    int frameWidth, frameHeight;
+
+    // using object2d so framerect dont ask for color
+    Object2D frameRect;
+
+    SpriteSheet2D(int frameWidth, int frameHeight,
+        float x, float y, std::string file_path,
+        Color tint = WHITE): Image2D(x, y, file_path, tint), frameHeight(frameHeight), frameWidth(frameWidth), frameRect(0, 0, frameWidth, frameHeight){
+
+        // gotta do this otherwise, KABOOM collision is messed up
+        w = frameWidth;
+        h = frameHeight;
+    }
+
+
+    void nextColumn();
+    void nextRow();
+    void prevColumn();
+    void prevRow();
+    void setColumn(int index);
+    void setRow(int index);
+    bool isAtFirstRow();
+    bool isAtLastRow();
+    bool isAtFirstColumn();
+    bool isAtLastColumn();
+    void draw();
+};
+
+
+// Animated sprite sheet
+class Canvas::Animation2D : public Canvas::SpriteSheet2D {
+    private:
+    float timer;
+
+    public:
+    float animationDelay;
+
+    Animation2D(float animationDelay, Vector2f frameSize, Vector2f position, std::string file, Color tint = WHITE):
+        SpriteSheet2D(frameSize.x, frameSize.y, position.x, position.y, file, tint), animationDelay(animationDelay), timer(animationDelay){}
+    
+    void play();
 };

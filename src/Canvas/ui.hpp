@@ -23,7 +23,7 @@ class Canvas::TextLabel : public Canvas::UIComponent {
     int fontSize;
     std::string text;
 
-    TextLabel(float x, float y, int fontSize, std::string text, Color color = BLACK): UIComponent(x, y, MeasureText(text.c_str(), fontSize), fontSize, color), text(text){
+    TextLabel(float x, float y, int fontSize, std::string text, Color color = BLACK): UIComponent(x, y, MeasureText(text.c_str(), fontSize), fontSize, color), fontSize(fontSize), text(text){
     }
 
     void draw();

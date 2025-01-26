@@ -210,8 +210,49 @@ TextLabel(float x, float y, int fontSize, std::string text, Color color = BLACK)
 
 All UI COmponents can also be drawn with there `draw` functions
 
+# Spritsheets
+These are located in Canvas/Graphics
+
+In canvas spritesheets are used to store animations in a png file.
+There are two type of spritesheets in canvas,
+
+1. SpriteSheet2D: This spritesheet needs to be manually animated using its functions
+2. Animation2D: This spritesheet is automatically animated with its play function.
+
+Spritesheet2d is a subclass of Image2D, meaning it has all functions from Image2D
+Animation2D is a subclass of Spritesheet2D, meaning it has all functions from Image2D and Spritesheet2D
+
+How to use,
+To create a spritesheet, You use its constructor
+SpriteSheet2D(nt frameWidth, int frameHeight,
+        float x, float y, std::string file_path,
+        Color tint = WHITE)
+
+SpriteSheet2D uses the frameWIdth and frameHeight to calculate frames.
+Both spritesheet2d and animation2d have these functions:
+nextColumn, nextRow, prevColumn, prevRow, setRow(index), setColumn(index)
+
+These functions are used to manage the spritesheet, they automaticlly check if the frame is the end frame/row and only manage if it isnt.
+Meaning if you call nextColumn but the column is already at the end, it wont continue
+the set functions use a index (starting from 0) to set the column/row.
+
+How to create a animation2d:
+Animation2D(float animationDelay, Vector2f frameSize, Vector2f position, std::string file, Color tint = WHITE)
+
+Just to make the constructor shorter, I used Canvas/Math Vector2f instead of seperate xy wh
+
+The animation2d class has a default animationDelay (customizable)
+And a timer to control the delay
+Every time you call its `play` function, It checks if the timer isnt 0
+If yes, decrement the timer and exit the function
+If no, move to next frame (only if the current frame isnt the lastt frame) and set the timer to the default delay
+
+Because of this you can make a single png file for all your animations for a single entity and seperae the animations for the entity in rows.
+
+Thats the whole spriehseet thing done
+
 # What's Coming Next
-Well in predev 2, these will come:
-1. Spritesheets
+Well in predev 3, these will come:
+1. more math stuff
 2. Rotation for objects
 3. Text labels with fonts
