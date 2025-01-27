@@ -35,6 +35,16 @@ bool Canvas::Mouse::isHidden()
     return IsCursorHidden();
 }
 
+bool Canvas::Mouse::isHovering(Object2D obj)
+{
+    return Object2D(x(), y(), 10, 10).collidingWith(obj);
+}
+
+bool Canvas::Mouse::isClicking(Object2D obj)
+{
+    return isHovering(obj) && buttonHeld(LeftButton);
+}
+
 void Canvas::Mouse::hide()
 {
     HideCursor();
@@ -43,4 +53,32 @@ void Canvas::Mouse::hide()
 void Canvas::Mouse::show()
 {
     ShowCursor();
+}
+
+bool Canvas::KeyBinding::held()
+{
+    if (modifier != -128){
+        return Keyboard::keyHeld(modifier) && Keyboard::keyHeld(key);
+    }
+
+    return Keyboard::keyHeld(key);
+}
+
+bool Canvas::KeyBinding::pressed()
+{
+    if (modifier != -128){
+        return Keyboard::keyHeld(modifier) && Keyboard::keyPressed(key);
+    }
+
+    return Keyboard::keyPressed(key);
+}
+
+bool Canvas::MouseBinding::held()
+{
+    return Mouse::buttonHeld(button);
+}
+
+bool Canvas::MouseBinding::pressed()
+{
+    return Mouse::buttonPressed(button);
 }

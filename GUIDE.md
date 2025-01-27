@@ -198,7 +198,6 @@ congrats the music will now loop till the end of time
 
 # Text labels
 These are in the Canvas/UI module
-Right now this cannot have custom fonts.
 
 All UI components (such as this one) are subclasses of Canvas::UiCOmponent which is a subclass of Object2D
 
@@ -209,6 +208,35 @@ You can get its width using itsd 'w' field
 TextLabel(float x, float y, int fontSize, std::string text, Color color = BLACK)
 
 All UI COmponents can also be drawn with there `draw` functions
+
+There are also RichLabel, Which can have spacing and fonts
+
+RichLabel(float x, float y, int fontSize, std::string text, std::string fontFile, int spacing = 1, Color color = BLACK)
+
+these are subclasses of TextLabels meaning they hve all funcs from them
+
+# Buttons
+Located in Canvas/UI
+
+Buttons are just rectangles that calculate the positiions are stuff and make a button
+
+
+Button(float x, float y, TextLabel label, ButtonEvent event)
+Example:
+Button(20, 30, TextLabel(0, 0, 16, "Hello!", BLACK), [this](){ functionToCallOnButtonClick(); })
+
+The class arranges the label automatically so you can just put 0,0 in the label, You can also use RichLabel instead.
+The clicking, hovering are automatically handled
+
+# DIalogs
+Located in Canvas/Dialog
+
+A dialog is also just a rectangle that arranges the title and close button.
+The close button is automatically handled.
+
+Dialog(float x, float y, std::string titleBarText, float width, float height, Color color)
+You can use the Dialog.visible field to control whether the dialog should be visible or no.
+
 
 # Spritsheets
 These are located in Canvas/Graphics
@@ -251,8 +279,24 @@ Because of this you can make a single png file for all your animations for a sin
 
 Thats the whole spriehseet thing done
 
+# Keybindings and Mousebindings
+Located in Canvas/Input
+
+In canvas, You have two classes you can use to have key and mouse bindings, Particularly useful in games where you need customizable keybindings.
+
+
+KeyBinding(int key, int modifier):
+    The modifier is optional. You can set it to something like KEY_LEFT_ALT, then when you press the modifier with the key specfiied, the keybinding will trigger
+
+    held(): the keybinding is held
+    pressed(): the keybinding is being pressed
+
+MouseBinding(int button):
+    held(): The button is held
+    pressed(): The button is pressed
+
+
 # What's Coming Next
-Well in predev 3, these will come:
-1. more math stuff
-2. Rotation for objects
-3. Text labels with fonts
+Well in alpha, these will come:
+1. Raycasting
+2. Simple ligting

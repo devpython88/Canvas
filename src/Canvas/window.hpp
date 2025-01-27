@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "Math"
 #include <string>
+#include <vector>
 
 #define CREATE_GAME(gameClass) int main(int argc, const char *argv[]){\
     gameClass game;\

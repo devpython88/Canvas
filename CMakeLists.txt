@@ -5,10 +5,10 @@ project(Canvas)
 set(CMAKE_CXX_STANDARD 17)
 
 set(HEADERS src/Canvas/window.hpp src/Canvas/graphics.hpp src/Canvas/audio.hpp src/Canvas/ui.hpp
-    src/Canvas/input.hpp src/Canvas/math.hpp)
+    src/Canvas/input.hpp src/Canvas/math.hpp src/Canvas/dialog.hpp)
 
 set(SOURCES src/main.cpp src/Canvas/window.cpp src/Canvas/graphics.cpp src/Canvas/audio.cpp src/Canvas/ui.cpp
-    src/Canvas/input.cpp src/Canvas/math.cpp)
+    src/Canvas/input.cpp src/Canvas/math.cpp src/Canvas/dialog.cpp)
 
 set(TARGET test)
 set(LIBRARY canvas)
