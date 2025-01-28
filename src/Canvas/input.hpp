@@ -1,12 +1,14 @@
 #pragma once
 #include "raylib.h"
 #include "Graphics"
+#include <map>
 
 namespace Canvas {
     class Keyboard;
     class Mouse;
     class KeyBinding;
     class MouseBinding;
+    class InputManager;
 }
 
 
@@ -32,6 +34,8 @@ class Canvas::Mouse {
     static bool buttonPressed(int btn);
     static bool buttonReleased(int btn);
     static bool buttonHeld(int btn);
+    static float scrollAmount(bool windowAlike = true);
+    static Vector2 scrollAmountV();
     static bool isHidden();
 
     static bool isHovering(Object2D obj);
@@ -40,6 +44,7 @@ class Canvas::Mouse {
     static void hide();
     static void show();
 };
+
 
 
 class Canvas::KeyBinding {
@@ -65,3 +70,4 @@ class Canvas::MouseBinding {
     bool held();
     bool pressed();
 };
+

@@ -30,6 +30,20 @@ bool Canvas::Mouse::buttonHeld(int btn)
     return IsMouseButtonDown(btn);
 }
 
+float Canvas::Mouse::scrollAmount(bool windowAlike)
+{
+    if (windowAlike){
+        return -GetMouseWheelMove();
+    }
+    
+    return GetMouseWheelMove();
+}
+
+Vector2 Canvas::Mouse::scrollAmountV()
+{
+    return GetMouseWheelMoveV();
+}
+
 bool Canvas::Mouse::isHidden()
 {
     return IsCursorHidden();
@@ -81,4 +95,26 @@ bool Canvas::MouseBinding::held()
 bool Canvas::MouseBinding::pressed()
 {
     return Mouse::buttonPressed(button);
+}
+
+void Canvas::InputManager::addBinding(std::string name, int key, int mod)
+{
+   keyBindings[name] = KeyBinding(key, mod);
+}
+
+void Canvas::InputManager::addBinding(std::string name, int button)
+{
+    mouseBindings[name] = MouseBinding(button);
+}
+
+bool Canvas::InputManager::checkMouseBinding(std::string name, bool held)
+{
+    if (held) return mouseBindings[name].held();
+    return mouseBindings[name].pressed();
+}
+
+bool Canvas::InputManager::checkKeyBinding(std::string name, bool held)
+{
+    if (held) return keyBindings[name].held();
+    return mouseBindings[name].pressed();
 }

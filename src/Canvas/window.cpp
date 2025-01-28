@@ -39,3 +39,17 @@ void Canvas::Window::update()
 void Canvas::Window::closing()
 {
 }
+
+bool Canvas::Window::focused()
+{
+    return IsWindowFocused();
+}
+
+WindowState Canvas::Window::getWindowState()
+{
+    if (IsWindowFullscreen) return WindowState::Fullscreen;
+    if (IsWindowMaximized) return WindowState::Maximized;
+    if (IsWindowMinimized) return WindowState::Minimized;
+    return WindowState::Fullscreen;
+    
+}

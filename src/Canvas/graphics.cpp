@@ -5,9 +5,13 @@ bool Canvas::Object2D::collidingWith(Object2D with) const
     return CheckCollisionRecs({ x, y, w, h}, { with.x, with.y, with.w, with.h });
 }
 
+void Canvas::Object2D::draw()
+{
+}
+
 void Canvas::Rect2D::draw()
 {
-    DrawRectangle(x, y, w, h, color);
+    if (visible) DrawRectanglePro((Rectangle) { x, y, w, h }, { 0, 0 }, rotation, color);
 }
 
 bool Canvas::Circle2D::collidingWith(Circle2D with) const
@@ -22,7 +26,7 @@ bool Canvas::Circle2D::collidingWith(Object2D with) const
 
 void Canvas::Circle2D::draw()
 {
-    DrawCircle(x, y, w, color);
+    if (visible) DrawCircle(x, y, w, color);
 }
 
 bool Canvas::Image2D::isLoaded()
@@ -32,7 +36,7 @@ bool Canvas::Image2D::isLoaded()
 
 void Canvas::Image2D::draw()
 {
-    DrawTexture(texture, x, y, tint);
+    if (visible) DrawTextureEx(texture, { x, y }, rotation, scale, tint);
 }
 
 void Canvas::Image2D::unload()
@@ -104,7 +108,7 @@ bool Canvas::SpriteSheet2D::isAtLastColumn()
 
 void Canvas::SpriteSheet2D::draw()
 {
-    DrawTextureRec(texture, (Rectangle) { frameRect.x, frameRect.y, frameRect.w, frameRect.h }, (Vector2) { x, y }, tint);
+    if (visible) DrawTextureRec(texture, (Rectangle) { frameRect.x, frameRect.y, frameRect.w, frameRect.h }, (Vector2) { x, y }, tint);
 }
 
 // animation

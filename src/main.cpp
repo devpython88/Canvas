@@ -4,6 +4,7 @@
 #include "Canvas/UI"
 #include "Canvas/Audio"
 #include "Canvas/Dialog"
+#include "Canvas/Misc"
 
 class Game : public Canvas::Window {
     public:
@@ -15,6 +16,8 @@ class Game : public Canvas::Window {
     Canvas::KeyBinding keyBinding1;
     Canvas::Button button1;
     Canvas::Dialog dialog;
+    Canvas::Lighting light;
+    Canvas::Gravity gravity;
 
     void btnClicked();
     void update();
@@ -24,8 +27,11 @@ class Game : public Canvas::Window {
         image1(3.0f, Canvas::Vector2f(32 , 32), Canvas::Vector2f(300, 300), "abc.png"),
         textLabel1(0, 0, 16, "HEllo!", "Consola.ttf", 2), keyBinding1(KEY_A, KEY_LEFT_CONTROL),
         button1(200, 10, Canvas::TextLabel(0, 0, 16, "Hello!", WHITE), [this](){ btnClicked(); }),
-        dialog(20, 20, "Hllo!", 300, 200, GRAY){
+        dialog(20, 20, "Hllo!", 300, 200, GRAY), light(20, 20, 50, 80, RED), gravity(&rect1, 0.1f, 3.0f){
             dialog.visible = true;
+            rect1.x = dialog.calculateRelativePosition(rect1).x;
+            rect1.y = dialog.calculateRelativePosition(rect1).y;
+    
     }
 };
 
@@ -42,6 +48,8 @@ void Game::update()
     if (keyBinding1.pressed()){
         rect1.y += 10;
         // image1.nextRow();
+        dialog.x += 10;
+        dialog.y += 10;
     }
 
     if (circle1 & rect1){
@@ -53,15 +61,19 @@ void Game::update()
     }
 
     if (image1.isAtLastColumn()){ image1.setColumn(0); }
+
+    gravity.update();
+
     startDraw();
     startCam();
-    rect1.draw();
+    light.draw();
     circle1.draw();
     image1.draw();
     textLabel1.draw();
     button1.draw();
     endCam();
     dialog.draw();
+    rect1.draw();
     endDraw();
 }
 

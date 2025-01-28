@@ -18,10 +18,15 @@ class Canvas::Object2D {
     public:
     float w, h;
     float x, y;
+    int rotation;
+    bool visible;
 
-    Object2D(float x, float y, float w, float h): x(x), y(y), w(w), h(h){}
+    Object2D(float x, float y, float w, float h, int rotation = 0): x(x), y(y), w(w), h(h), rotation(rotation){
+        visible = true;
+    }
 
     bool collidingWith(Object2D with) const;
+    void draw();
     inline bool operator &(Object2D obj){
         return collidingWith(obj);
     }
@@ -32,7 +37,7 @@ class Canvas::Rect2D : public Canvas::Object2D {
     public:
     Color color;
 
-    Rect2D(float x, float y, float w, float h, Color color): Object2D(x, y, w, h), color(color){}
+    Rect2D(float x, float y, float w, float h, Color color, int rotation = 0): Object2D(x, y, w, h, rotation), color(color){}
 
 
     void draw(); 
@@ -62,8 +67,9 @@ class Canvas::Image2D : public Canvas::Object2D {
     public:
     Color tint;
     Texture2D texture;
+    int scale;
 
-    Image2D(float x, float y, std::string file_path, Color tint = WHITE): Object2D(x, y, 0, 0), texture(LoadTexture(file_path.c_str())), tint(tint){
+    Image2D(float x, float y, std::string file_path, Color tint = WHITE, int scale = 1): Object2D(x, y, 0, 0), texture(LoadTexture(file_path.c_str())), scale(scale), tint(tint){
         w = texture.width;
         h = texture.height;
     }

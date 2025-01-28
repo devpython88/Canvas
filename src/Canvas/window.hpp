@@ -4,6 +4,13 @@
 #include <string>
 #include <vector>
 
+enum class WindowState {
+    Maximized,
+    Minimized,
+    Normal,
+    Fullscreen
+};
+
 #define CREATE_GAME(gameClass) int main(int argc, const char *argv[]){\
     gameClass game;\
     while (game){\
@@ -83,4 +90,11 @@ class Canvas::Window {
     operator bool(){
         return !WindowShouldClose();
     }
+
+
+    // miscellaneous
+
+    bool focused();
+    WindowState getWindowState();
+
 };

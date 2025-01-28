@@ -142,14 +142,17 @@ Left click: Canvas::LeftButton
 Middle click: Canvas::MiddleButton
 Right click: Canvas::RightButton
 
-scrolling in predev 2
-
 ### Mouse
     x(); get x (float)
     y(); get y (float)
     buttonHeld(int button); button held
     buttonPressed(int button); button pressed
-    buttonReleased(int button); button released
+    buttonReleased(int button); button release
+    scrollAmount(bool windowAlike = true):
+        with windowAlike set to true: Windows scrolling (scroll up = up, scroll down = down)
+        without windowAlike set to true: macOS scrolling (scroll up = down, scroll down = up)
+    
+    scrollAmountV(): Returns a vector containing the scroll amount 
 
     isHidden(); Is the cursor hidden
 
@@ -237,6 +240,10 @@ The close button is automatically handled.
 Dialog(float x, float y, std::string titleBarText, float width, float height, Color color)
 You can use the Dialog.visible field to control whether the dialog should be visible or no.
 
+Now dialogs have a function called calculateRelativePosition.
+calculateRelativePosition(Object2D obj, int xIndex, int yIndex);
+You can set xIndex and yIndex (starting from 0) to arrange the object youre trying to put in the dialog.
+This returns a Vector2 containing the calculated position for the object.
 
 # Spritsheets
 These are located in Canvas/Graphics
@@ -296,7 +303,9 @@ MouseBinding(int button):
     pressed(): The button is pressed
 
 
+
+
 # What's Coming Next
-Well in alpha, these will come:
-1. Raycasting
-2. Simple ligting
+Well in alpha 2, these will come:
+1. levels
+2. idk
