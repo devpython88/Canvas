@@ -303,6 +303,31 @@ MouseBinding(int button):
     pressed(): The button is pressed
 
 
+# Lighting
+Located in Canvas/Misc
+
+Though the built in lighting is questionable its still something.
+i tried raycasted lighting but it didnt work.
+
+Lighting(float x, float y, float radius, unsigned char intensity, Color color)
+
+You can draw this lighting using .draw()
+
+
+# Gravity
+Located in Canvas/Misc
+
+Gravity class is designed to be simple gravity, it has a built in jump mechanism
+
+It handles jumps automatically
+
+Gravity(Object2D* object, float acceleration, float jumpPower, int jumpKey = KEY_SPACE)
+object is the object you'll be applying the gravity to.
+acceleration is the acceleration of the fall, low = slow fall, high = quick fall
+jumpPower is self-explanatory
+jumpKey is the key to jump
+
+You can update the gravity using .update()
 
 
 # What's Coming Next
