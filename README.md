@@ -77,5 +77,7 @@ CREATE_GAME(Game);
 The build command is: `g++ -o main main.cpp -Ix -Ly -lcanvas -lraylib` The x is the path to the canvas include dir, the y is the path to the canvas lib dir
 
 Some photos of this example:
-<img src="/.exph1" width="256"/>
-<img src="/.exph2" width="256"/>
+
+<img src="/.exph1.PNG"/>
+
+<img src="/.exph2.PNG"/>
