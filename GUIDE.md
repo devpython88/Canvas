@@ -36,21 +36,17 @@ I'll still show you through how to build Canvas from source.
     ```bash
     git clone https://github.com/devpython88/Canvas.git
     cd Canvas
+    mkdir build
     cd build
     ```
 3. Build Canvas
     ```bash
-    cmake -G Ninja ..
-    ninja
+    cmake ..
+    make
     ```
-4. Copy the files
-    ```bash
-    # copy header directory
-    cp ../src/Canvas /path/to/gcc/include/dir
-    # copy the library
-    cp libcanvas.a /path/to/gcc/lib/dir
-    ```
-
+4. How to link and inclde
+    To tell c++ where the include and lib files are.
+    Add this flag `-I/path/to/canvas/include` and these flags `-L/path/to/canvas/lib -lcanvas`
 
 # Basic Game
 Now that you've built and installed Canvas from source.
