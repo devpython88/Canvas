@@ -1,3 +1,5 @@
+Contributors: @UriahNegbi
+
 <img src="/CanvasLogo.png" />
 
 # Canvas
