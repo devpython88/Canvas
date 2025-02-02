@@ -1,5 +1,7 @@
 #include "graphics.hpp"
 
+/* OBJECT 2D */
+
 bool Canvas::Object2D::collidingWith(Object2D with) const
 {
     return CheckCollisionRecs({ x, y, w, h}, { with.x, with.y, with.w, with.h });
@@ -9,25 +11,109 @@ void Canvas::Object2D::draw()
 {
 }
 
+void Canvas::Line2D::draw(){
+    DrawLine(start.x, start.y, end.x, end.y, color);
+}
+
+void Canvas::Line2D::drawPro()
+{
+    DrawLineEx(start.toRaylibVector(), end.toRaylibVector(), width, color);
+}
+
+void Canvas::Object2D::pool()
+{
+    oldPos.x = x;
+    oldPos.y = y;
+
+    x = -125000;
+    y = -125000;
+}
+
+void Canvas::Object2D::unpool()
+{
+    x = oldPos.x;
+    y = oldPos.y;
+}
+
+/* OBJ2D.RECT2D */
+
 void Canvas::Rect2D::draw()
 {
-    if (visible) DrawRectanglePro((Rectangle) { x, y, w, h }, { 0, 0 }, rotation, color);
+    if (visible) DrawRectanglePro(Rectangle{ x, y, w, h }, Vector2{ 0, 0 }, rotation, color);
 }
+
+/* OBJ2D.CIRCLE2D */
 
 bool Canvas::Circle2D::collidingWith(Circle2D with) const
 {
-    return CheckCollisionCircles({ x, y }, w, { with.x, with.y }, with.w);
+    return CheckCollisionCircles(Vector2{ x, y }, w, Vector2{ with.x, with.y }, with.w);
 }
 
 bool Canvas::Circle2D::collidingWith(Object2D with) const
 {
-    return CheckCollisionCircleRec({ x, y }, w, { with.x, with.y, with.w, with.h });
+    return CheckCollisionCircleRec(Vector2{ x, y }, w, Rectangle{ with.x, with.y, with.w, with.h });
 }
 
 void Canvas::Circle2D::draw()
 {
     if (visible) DrawCircle(x, y, w, color);
 }
+
+/* OBJ2D.Triangle2D */
+bool Canvas::Triangle2D::collidingWith(Triangle2D with) const
+{
+    return !(
+        x + radius > with.x ||
+        y + radius > with.y ||
+        x < with.x + with.radius ||
+        y < with.y + with.radius
+    );
+}
+
+void Canvas::Triangle2D::draw()
+{
+    if (visible) DrawPoly(Vector2{x, y}, 3, radius, rotation, color);
+}
+
+bool Canvas::Triangle2D::collidingWith(Object2D with) const
+{
+    return !(
+        x + radius > with.x ||
+        y + radius > with.y ||
+        x < with.x + with.w ||
+        y < with.y + with.w
+    );
+}
+
+/* OBJ2D.Poly2D */
+void Canvas::Poly2D::draw()
+{
+    if (visible) DrawPoly(Vector2{x, y}, sides, radius, rotation, color);
+}
+
+bool Canvas::Poly2D::collidingWith(Poly2D with) const
+{
+    return !(
+        x + radius > with.x ||
+        y + radius > with.y ||
+        x < with.x + with.radius ||
+        y < with.y + with.radius
+    );
+}
+
+bool Canvas::Poly2D::collidingWith(Object2D with) const
+{
+    return !(
+        x + radius > with.x ||
+        y + radius > with.y ||
+        x < with.x + with.w ||
+        y < with.y + with.w
+    );
+}
+
+    
+
+/* OBJ2D.IMAGE2D*/
 
 bool Canvas::Image2D::isLoaded()
 {
@@ -36,7 +122,7 @@ bool Canvas::Image2D::isLoaded()
 
 void Canvas::Image2D::draw()
 {
-    if (visible) DrawTextureEx(texture, { x, y }, rotation, scale, tint);
+    if (visible) DrawTextureEx(texture, Vector2{ x, y }, rotation, scale, tint);
 }
 
 void Canvas::Image2D::unload()
@@ -108,7 +194,7 @@ bool Canvas::SpriteSheet2D::isAtLastColumn()
 
 void Canvas::SpriteSheet2D::draw()
 {
-    if (visible) DrawTextureRec(texture, (Rectangle) { frameRect.x, frameRect.y, frameRect.w, frameRect.h }, (Vector2) { x, y }, tint);
+    if (visible) DrawTextureRec(texture, Rectangle{ frameRect.x, frameRect.y, frameRect.w, frameRect.h }, Vector2{ x, y }, tint);
 }
 
 // animation

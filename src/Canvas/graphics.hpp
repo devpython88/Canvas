@@ -7,21 +7,27 @@ namespace Canvas {
     class Object2D;
     class Rect2D;
     class Circle2D;
+    class Line2D;
+    class Triangle2D;
+    class Poly2D;
 
     class Image2D;
     class SpriteSheet2D;
     class Animation2D;
 }
-
+    
 
 class Canvas::Object2D {
+    protected:
+    Vector2f oldPos;
+
     public:
     float w, h;
     float x, y;
     int rotation;
     bool visible;
 
-    Object2D(float x, float y, float w, float h, int rotation = 0): x(x), y(y), w(w), h(h), rotation(rotation){
+    Object2D(float x, float y, float w, float h, int rotation = 0): x(x), y(y), w(w), h(h), rotation(rotation), oldPos(x, y){
         visible = true;
     }
 
@@ -30,6 +36,9 @@ class Canvas::Object2D {
     inline bool operator &(Object2D obj){
         return collidingWith(obj);
     }
+
+    void pool();
+    void unpool();
 };
 
 
@@ -43,6 +52,33 @@ class Canvas::Rect2D : public Canvas::Object2D {
     void draw(); 
 };
 
+class Canvas::Triangle2D : public Canvas::Object2D {
+    public:
+    Color color;
+    float radius;
+
+    Triangle2D(float x, float y, float radius, int rotation, Color color): Object2D(x, y, radius, radius, rotation), radius(radius), color(color){}
+
+    bool collidingWith(Triangle2D with) const;
+    bool collidingWith(Object2D with) const;
+    
+    void draw();
+};
+
+class Canvas::Poly2D : public Object2D {
+    public:
+    Color color;
+    int sides;
+    float radius;
+
+
+    Poly2D(float x, float y, int sides, float radius, int rotation, Color color): Object2D(x, y, radius, radius, rotation), radius(radius), sides(sides), color(color){}
+
+    bool collidingWith(Poly2D with) const;
+    bool collidingWith(Object2D with) const;
+    
+    void draw();
+};  
 
 class Canvas::Circle2D : public Canvas::Object2D {
     public:
@@ -55,6 +91,21 @@ class Canvas::Circle2D : public Canvas::Object2D {
 
 
     void draw();
+};
+
+
+class Canvas::Line2D {
+    public:
+    Vector2f start, end;
+    float width;
+    Color color;
+    bool visible;
+
+
+    Line2D(Vector2f start, Vector2f end, float width, Color color = BLACK): color(color), start(start), end(end), width(width){ visible = true; }
+
+    void draw();
+    void drawPro();
 };
 
 /**************************************/

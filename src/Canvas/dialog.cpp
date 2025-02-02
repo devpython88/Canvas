@@ -6,7 +6,7 @@ void Canvas::Dialog::draw()
 
     recalculateContentLayout();
 
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), (Color) { 0, 0, 0, 150 });
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color{ 0, 0, 0, 150 });
     DrawRectangle(x, y, width, height, color);
     titleBar.draw();
     button.draw();

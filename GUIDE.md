@@ -2,6 +2,8 @@
 ## this will guide you through all of canvas's game development tools
 
 
+## Warning: This is an Early-access build, things might go wrong
+
 # Table of contents
 [Downloading Canvas](#downloading)
 
@@ -19,6 +21,10 @@
 
 [What comes next?](#whats-coming-next)
 
+# 3d (early access) Table of contents
+
+[3D](#3d)
+[Perspective Camera](#perspective-camera)
 
 
 # Downloading
@@ -36,17 +42,21 @@ I'll still show you through how to build Canvas from source.
     ```bash
     git clone https://github.com/devpython88/Canvas.git
     cd Canvas
-    mkdir build
     cd build
     ```
 3. Build Canvas
     ```bash
-    cmake ..
-    make
+    cmake -G Ninja ..
+    ninja
     ```
-4. How to link and inclde
-    To tell c++ where the include and lib files are.
-    Add this flag `-I/path/to/canvas/include` and these flags `-L/path/to/canvas/lib -lcanvas`
+4. Copy the files
+    ```bash
+    # copy header directory
+    cp ../src/Canvas /path/to/gcc/include/dir
+    # copy the library
+    cp libcanvas.a /path/to/gcc/lib/dir
+    ```
+
 
 # Basic Game
 Now that you've built and installed Canvas from source.
@@ -120,6 +130,13 @@ Note: The Object2D class and its subclasses all have their properties (such as x
 These are the constructors
 Rect2D(float x, float y, float w, float h, Color color);
 Circle2D(float x, float y, float rad, Color color);
+
+Now Canvas has a Poly2D and Triangle2D classes for triangles and polygons
+Poly2D(float x, float y, int sides, float radius, int rotation, Color color)
+A Poly2D can have custom number of sides
+
+A triangle only has 3
+Triangle2D(float x, float y, float radius, int rotation, Color color)
 
 ### Note: ALL THE THINGS ARE IN DIFFERENT MODULES, Such as UI components in <Canvas/UI>, Audio in <Canvas/Audio>, Graphics (shapes and stuff) in <Canvas/Graphics>, Math in <Canvas/Math> and Input in <Canvas/Input>
 
@@ -324,6 +341,83 @@ jumpPower is self-explanatory
 jumpKey is the key to jump
 
 You can update the gravity using .update()
+
+# Menus
+Canvas now has menus that auto arrange items with spacing
+Located in Canvas/UI
+
+
+Menu(TextLabel label, float x, float y, Color color, float spacing = 0.0f)
+
+The menu buttons are shown when the button (the menu) is clicked
+
+You can add new options using Menu::options.push_back(Button)
+The options are arranged using the arrangeItems function.
+It is called every frame meaning you dont need to manually call it
+
+All items are arranged under the first item with their spacing
+Meaning if the first item is in the center, all will be arranged in the center under eachother
+
+# 3D
+Now canvas has 3d (more support in early acess 2)
+
+Right now, You can create cubes and load models
+Everything 3D-related is in Canvas/3D and in the Canvas3D namespace
+For ui and everything, you still use normal canvas but for 3d graphics you use Canvas/3D/Graphics3D
+
+
+Example:
+```cpp
+#include <Canvas/Window>
+#include <Canvas/3D/Graphics3D>
+
+
+class Game : public Canvas3D::Window3D {
+    public:
+
+    Canvas3D::Model3D model;
+
+    Game(): Window3D("Hello", 800, 600, Canvas3D::PerspectiveCamera(
+        Canvas::Vector3f(0.0f, 0.0f, 0.0f), // Target
+        Canvas::Vector3f(0.0f, 20.0f, 20.0f), // Position
+        Canvas::Vector3f(0.0f, 1.0f, 0.0f), // Rotation towards target
+        20, // FOV
+    )), model("MyModel.obj", Canvas::Vector3f(0.0f, 0.0f, 0.0f), // Position
+        Canvas::Vector3f(1.0f, 1.0f, 1.0f), // Size (for scaling),
+        Canvas::Vector3f(0.0f, 0.0f, 0.0f), // Rotation
+        0, // Angle
+        ){}
+
+
+    void update(){
+        // Window3D is a subclass of Window meaning it has all functions from Window too
+
+        startDraw();
+        startCam(); // WIndow3D startcam starts 3d mode not 2d mode
+        model.draw();
+        endCam();
+        endDraw();
+    }
+
+    void closing(){ // make sure unload models and stuff
+        model.unload();
+    }
+};
+
+```
+
+
+You can use Canvas3D::Cube3D(Canvas::Vector3f position, Canvas::Vector3f size, Color color) to create a cube
+
+
+
+## Perspective Camera
+The Canvas3D::PerspectiveCamera is a 3d camera not a 2d camera
+It has a target, position and the rotation towards the target
+How to move it:
+To move the camera but keep it locked onto the target position: Camera3D::moveCamera(xDelta, yDelta)
+To move the camera but don't keep it locked onto the target position: Camera3D::moveCameraEx(xDelta, yDelta)
+
 
 
 # What's Coming Next

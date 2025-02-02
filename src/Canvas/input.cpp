@@ -56,7 +56,7 @@ bool Canvas::Mouse::isHovering(Object2D obj)
 
 bool Canvas::Mouse::isClicking(Object2D obj)
 {
-    return isHovering(obj) && buttonHeld(LeftButton);
+    return isHovering(obj) && buttonPressed(LeftButton);
 }
 
 void Canvas::Mouse::hide()
@@ -95,26 +95,4 @@ bool Canvas::MouseBinding::held()
 bool Canvas::MouseBinding::pressed()
 {
     return Mouse::buttonPressed(button);
-}
-
-void Canvas::InputManager::addBinding(std::string name, int key, int mod)
-{
-   keyBindings[name] = KeyBinding(key, mod);
-}
-
-void Canvas::InputManager::addBinding(std::string name, int button)
-{
-    mouseBindings[name] = MouseBinding(button);
-}
-
-bool Canvas::InputManager::checkMouseBinding(std::string name, bool held)
-{
-    if (held) return mouseBindings[name].held();
-    return mouseBindings[name].pressed();
-}
-
-bool Canvas::InputManager::checkKeyBinding(std::string name, bool held)
-{
-    if (held) return keyBindings[name].held();
-    return mouseBindings[name].pressed();
 }

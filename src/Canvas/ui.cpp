@@ -30,3 +30,30 @@ void Canvas::Button::draw()
     rect.draw();
     label.draw();
 }
+
+void Canvas::Menu::toggleOptions()
+{
+    showOptions = !showOptions;
+}
+
+void Canvas::Menu::arrangeItems()
+{
+    if (options.empty()) return;
+
+    float yPos;
+    yPos = options[0].rect.y;
+
+    for(Button& btn : options){
+        btn.rect.x = options[0].rect.x;
+        btn.rect.y = yPos + options[0].rect.h + spacing;
+
+        yPos = btn.rect.y;
+    }
+}
+
+void Canvas::Menu::draw()
+{
+    arrangeItems();
+    if (visible) button.draw();
+    if (showOptions) for (Button btn : options) btn.draw();
+}

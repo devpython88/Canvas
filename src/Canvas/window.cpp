@@ -53,3 +53,27 @@ WindowState Canvas::Window::getWindowState()
     return WindowState::Fullscreen;
     
 }
+
+
+void Canvas::Window3D::startCam()
+{
+    BeginMode3D(camera3d);
+}
+
+void Canvas::Window3D::endCam()
+{
+    EndMode3D();
+}
+
+void Canvas::PerspectiveCamera::moveCamera(float deltaX, float deltaY)
+{
+    position.x += deltaX;
+    position.y += deltaY;
+}
+
+void Canvas::PerspectiveCamera::moveCameraEx(float deltaX, float deltaY)
+{
+    moveCamera(deltaX, deltaY);
+    target.x += deltaX;
+    target.y += deltaY;
+}

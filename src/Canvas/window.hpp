@@ -24,9 +24,10 @@ enum class WindowState {
 
 namespace Canvas {
     class Camera;
+    class PerspectiveCamera;
     class Window;
+    class Window3D;
 };
-
 
 class Canvas::Camera {
     public:
@@ -59,17 +60,48 @@ class Canvas::Camera {
 
 };
 
+
+class Canvas::PerspectiveCamera {
+    protected:
+    Vector3f target;
+
+    public:
+    Vector3f position, rotationTowardsTarget;
+    float fov;
+
+    PerspectiveCamera(Vector3f target, Vector3f position, Vector3f rotationTowardsTarget, float fov):
+        target(target), position(position), rotationTowardsTarget(rotationTowardsTarget), fov(fov){}
+
+    operator Camera3D(){
+        Camera3D cam = { 0 };
+        cam.position = position.toRaylibVector();
+        cam.target = target.toRaylibVector();
+        cam.up = rotationTowardsTarget.toRaylibVector();
+        cam.fovy = fov;
+        cam.projection = CAMERA_PERSPECTIVE;
+        return cam;
+    }
+
+    /* Move camera locked*/
+    void moveCamera(float deltaX, float deltaY);
+    /* Move camera unlocked */
+    void moveCameraEx(float deltaX, float deltaY);
+    
+};
+
+
 /* WINDOW */
 
 class Canvas::Window {
+
     public:
-    Camera cam;
     int width, height;
     std::string title;
     int fps;
+    Camera cam;
 
     Window(std::string title, int width = 800, int height = 600, Camera cam = Camera(), int fps = 60):
-    title(title), width(width), height(height), cam(cam), fps(fps){
+    title(title), width(width), height(height), fps(fps), cam(cam){
         InitWindow(width, height, title.c_str());
         SetTargetFPS(fps);
     }
@@ -80,8 +112,9 @@ class Canvas::Window {
     void endCam();
     void endDraw();
     void close();
+    
+    // OVERRIDE FUNCTIONS
 
-    // OVERRIDED FUNCTIONS
     void update();
     void closing();
 
@@ -97,4 +130,15 @@ class Canvas::Window {
     bool focused();
     WindowState getWindowState();
 
+};
+
+class Canvas::Window3D : public Canvas::Window {
+    public:
+    PerspectiveCamera camera3d;
+
+    Window3D(std::string title, int width, int height, PerspectiveCamera camera, int fps = 60): Window(title, width, height, Camera(), fps), camera3d(camera){
+    }
+
+    void startCam();
+    void endCam();
 };
